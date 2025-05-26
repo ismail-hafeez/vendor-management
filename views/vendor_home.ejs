@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Home</title>
+    <style>
+        /* Styling remains the same as your original code */
+        body {
+            display: flex;
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            margin: 0;
+            background-color: #d1e2d2;
+            padding: 20px;
+        }
+
+        .container {
+            position: absolute;
+            top: 75px;
+            display: flex;
+            flex-direction: column; 
+            gap: 20px;
+        }
+
+        #vendor-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            overflow-y: auto;
+            max-height: 500px;
+            width: 700px;
+            height: 400px;
+        }
+        #performance-container {
+            position: absolute;
+            top: 350px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            overflow-y: auto;
+            max-height: 500px;
+            width: 700px;
+            height: 280px;
+        }
+        #info-container {
+            position: absolute;
+            top: 10px;
+            left:680px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            overflow-y: auto;
+            height: 600px;
+            width: 400px;
+        }
+        .box {
+            width: 620px;
+            height: 300px;
+            background-color: #4caf50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        .box1 {
+            width: 620px;
+            height: 200px;
+            background-color: #4c93af;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        .box2 {
+            width: 500px;
+            height: 535px;
+            background-color: #69afcb;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+        }
+        .box:hover,
+        .box1:hover,
+        .box2:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .box:active,
+        .box1:active,
+        .box2:active {
+            transform: scale(1);
+        }
+        #AC {
+            position: absolute;
+            top: 70px;
+            left: 50px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 35px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+        #PF {
+            position: absolute;
+            top: 340px;
+            left: 30px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 35px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+        #PI {
+            position: absolute;
+            left: 725px;
+            top: 85px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 40px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+        #exp {
+            position: absolute;
+            top: 100px;
+            right: 105px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 20px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+        .expbox {
+            width: 300px; /* Adjust the width of each box */
+            height: 200px; /* Set a fixed height */
+            background-color: #c54747;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .expbox:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        .expbox:active {
+            transform: scale(1);
+        }
+        #expDate-container {
+            padding: 10px;
+            border-radius: 8px; /* Rounded corners */
+            position: absolute;
+            top: 60px;
+            right: 50px;
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping */
+            gap: 20px; /* Space between the boxes */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            width: 360px; /* Ensure the container takes up the full width of the parent */
+            margin-top: 20px; /* Adjust spacing from top */
+        }
+  
+    </style>
+</head>
+<body>
+    <h1 id="AC">Active Contract</h1>
+    <h1 id="PI">Personal Info</h1>
+    <div class="container">
+        <div id="vendor-container"></div>
+        <h1 id="PF">Performace Feedback</h1>
+        <div id="performance-container"></div>
+        <div id="info-container"></div>
+    </div>
+    
+    <h1 id="exp">Contract Renewal Alert</h1>
+    <div id="expDate-container"></div>
+
+    <script>
+
+        const closeButtons = document.querySelectorAll('.close');
+        var vendor_login;
+
+        // Fetch and show vendors
+        //document.getElementById('show-contract-btn').addEventListener('click', () => {
+            fetch('/contract')  // Ensure the URL matches your server route
+                .then(response => response.json())
+                .then(contracts => {
+                    console.log('Fetched contracts:', contracts); // Check the vendor data
+                  
+                    const container = document.getElementById('vendor-container');
+                    container.innerHTML = ''; // Clear any existing content
+
+                    // Loop through the vendors and create a box for each one
+                    contracts.forEach(contract => {
+                        const contractBox = document.createElement('div');
+                        contractBox.classList.add('box');
+                        contractBox.innerHTML = `
+                            <div class="vendor-info">
+                                <p><strong>Contract ID:</strong> ${contract.ContractID}</p>
+                                <p><strong>Terms & Conditions:</strong> ${contract.TermsAndConditions}</p>
+                                <p><strong>Expiration Date:</strong> ${contract.ExpirationDate}</p>
+                                <p><strong>Special Clauses:</strong> ${contract.SpecialClauses}</p>
+                                
+                            </div>
+                        `;
+                        container.appendChild(contractBox);
+                        vendor_login = contract.VendorID;
+                    });
+
+                    container.style.display = 'flex';  // Ensure the container is displayed
+                })
+                .catch(error => console.error('Error fetching contracts:', error));
+        //});  
+        
+        // Fetch and show vendors
+        //document.getElementById('show-contract-btn').addEventListener('click', () => {
+            fetch('/show-performance')  // Ensure the URL matches your server route
+                .then(response => response.json())
+                .then(performances => {
+
+                    const container = document.getElementById('performance-container');
+                    container.innerHTML = ''; // Clear any existing content
+
+                    // Loop through the vendors and create a box for each one
+                    performances.forEach(performance => {
+                        const contractBox = document.createElement('div');
+                        contractBox.classList.add('box1');
+                        contractBox.innerHTML = `
+                            <div class="performance-info">
+                                <p><strong>Performance Rating:</strong> ${performance.PerformanceRating}</p>
+                                <p><strong>Feedback Text:</strong> ${performance.FeedbackText}</p>
+                            </div>
+                        `;
+                        container.appendChild(contractBox);
+                    });
+
+                    container.style.display = 'flex';  // Ensure the container is displayed
+                })
+                .catch(error => console.error('Error fetching contracts:', error));
+        //}); 
+            fetch('/vendor-loginInfo')  // Ensure the URL matches your server route
+                    .then(response => response.json())
+                    .then(logins => {
+
+                        const container = document.getElementById('info-container');
+                        container.innerHTML = ''; // Clear any existing content
+
+                        // Loop through the vendors and create a box for each one
+                        logins.forEach(login => {
+                            const contractBox = document.createElement('div');
+                            contractBox.classList.add('box2');
+                            contractBox.innerHTML = `
+                                <div class="login-info">
+                                    <p><strong>Vendor ID:</strong> ${login.VendorID}</p>
+                                    <p><strong>Email:</strong> ${login.Email}</p>
+                                    <p><strong>Phone Number:</strong> ${login.phoneNumber}</p>
+                                    <p><strong>Password:</strong> ${login.Password}</p>
+                                    <p><strong>Service Category:</strong> ${login.ServiceCategory}</p>
+                                </div>
+                            `;
+                            container.appendChild(contractBox);
+                        });
+
+                        container.style.display = 'flex';  
+                    });
+
+            fetch('/contract-date') 
+            .then(response => response.json())
+            .then(contracts => {
+                console.log('Contracts', contracts);
+                
+                // const container = document.getElementById('expDate-container');
+                // container.innerHTML = ''; // Clear existing content
+
+                // // Create a single box to hold all the alerts
+                // const vendorBox = document.createElement('div');
+                // vendorBox.classList.add('expbox');
+                // container.appendChild(vendorBox);
+
+
+                // Get the current date
+                const currentDate = new Date();
+
+                contracts.forEach(contract => {
+                    const expirationDate = new Date(contract.ExpirationDate);
+
+                    // Calculate the difference in milliseconds
+                    const diffTime = expirationDate - currentDate;
+
+                    // Convert milliseconds to days
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                    if (diffDays <= 30 && vendor_login == contract.VendorID) {
+                        const container = document.getElementById('expDate-container');
+                        container.innerHTML = ''; // Clear existing content
+
+                        // Create a single box to hold all the alerts
+                        const vendorBox = document.createElement('div');
+                        vendorBox.classList.add('expbox');
+                        container.appendChild(vendorBox);
+                        
+                        // Append text inside the single box
+                        const alertText = document.createElement('p');
+                        alertText.innerHTML = `
+                            <strong>Days Remaining:</strong> ${diffDays}
+                        `;
+                        vendorBox.appendChild(alertText);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching contracts:', error));                  
+
+    </script>
+</body>
+</html>

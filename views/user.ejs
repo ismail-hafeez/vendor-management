@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login/Register</title>
+    <style>
+        /* Styles remain the same */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d1e2d2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            max-width: 100%;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .toggle-link {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .toggle-link:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="form-title">User Login</h1>
+        
+        <!-- Login Form -->
+        <form id="user-form" action="/user-login" method="POST">
+            <div id="login-fields">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <br>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <br>  
+                <button type="submit">Login</button>
+            </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="register-form" action="/add-user" method="POST" style="display: none;">
+            <div id="register-fields">
+                <label for="userID">ID</label>
+                <input type="number" id="userID" name="userID" placeholder="Enter your ID" required>
+                <br>
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                <br>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <br>
+                <label for="phoneNumber">Phone Number</label>
+                <input type="number" id="phoneNumber" name="phoneNumber" placeholder="Enter your number" required>
+                <br>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                <br>  
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                    <option value="Head">Head</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Team Member">Team Member</option>
+                </select>
+                <label for="DepartmentID">Department</label>
+                <select id="DepartmentID" name="DepartmentID" required>
+                    <option value="1">Budget Management</option>
+                    <option value="2">Contract Management</option>
+                    <option value="3">Audit</option>
+                </select>
+                <br>              
+                <button type="submit">Register</button>
+            </div>
+        </form>
+
+        <div class="toggle-link" onclick="toggleForm()">Don't have an account? Register</div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('user-form');
+        const registerForm = document.getElementById('register-form');
+        const toggleLink = document.querySelector('.toggle-link');
+
+        function toggleForm() {
+            if (loginForm.style.display === 'none') {
+                // Switch to Login
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                toggleLink.textContent = "Don't have an account? Register";
+            } else {
+                // Switch to Register
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                toggleLink.textContent = 'Already have an account? Login';
+            }
+        }
+    </script>
+</body>
+</html>

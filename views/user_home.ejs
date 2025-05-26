@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>User Home</title>
+    <style>
+        /* Styling remains the same as your original code */
+        body {
+            display: flex;
+            justify-content: flex-start; 
+            align-items: flex-start; 
+            
+            margin: 0;
+            background-color: #d1e2d2;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column; 
+        }
+
+        .button-container {
+            display: flex; /* Align buttons side by side */
+            gap: 10px; /* Add gap between buttons */
+        }
+
+        #add-vendor-btn,
+        #add-contract-btn,
+        #del-contract-btn,
+        #create-po-btn,
+        #add-vendor-btn,
+        #performance-po-btn {
+            padding: 10px;
+            background-color: #4c93af;
+            color: white;
+            border: none;
+            width: 290px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #add-vendor-btn:hover,
+        #add-contract-btn:hover,
+        #del-contract-btn:hover,
+        #create-po-btn:hover,
+        #performance-po-btn:hover {
+            background-color: #2b728f;
+        }
+
+        #vendor-container {
+            width: 1450px;
+            /*max-width: 1200px; /* Maximum width for larger screens */
+            margin: 20px auto; /* Center the table with margins */
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern look */
+            border-radius: 8px; /* Rounded corners */
+            background-color: #dfe9e0; /* White background for the container */
+        }
+
+        #vendor-table {
+            width: 1450px;
+            border-collapse: collapse; /* Remove spacing between table cells */
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9; /* Light background for the table */
+            overflow: hidden; /* Ensures contents don't overflow */
+        }
+
+        #vendor-table thead tr {
+            background-color: #4CAF50; /* Modern green header */
+            color: white; /* White text for contrast */
+            text-align: left; /* Align headings to the left */
+            font-weight: bold; /* Bold headings */
+        }
+
+        #vendor-table thead th {
+            padding: 15px; /* Padding for better spacing */
+            font-size: 16px; /* Larger font for headings */
+            border-bottom: 2px solid #e0e0e0; /* Subtle divider under the header */
+        }
+
+        #vendor-table tbody tr:nth-child(even) {
+            background-color: #f2f2f2; /* Alternate row color for readability */
+        }
+
+        #vendor-table tbody tr:hover {
+            background-color: #f1f1f1; /* Highlight row on hover */
+            cursor: pointer; /* Indicate interactivity */
+        }
+
+        #vendor-table tbody td {
+            padding: 12px; /* Padding for data cells */
+            font-size: 14px;
+            border-bottom: 1px solid #ddd; /* Divider between rows */
+            color: #333; /* Dark text color for better contrast */
+        }
+
+        #vendor-table tbody tr:last-child td {
+            border-bottom: none; /* Remove bottom border for the last row */
+        }
+
+        /* Add responsive design */
+        @media (max-width: 768px) {
+            #vendor-container {
+                padding: 5px;
+            }
+
+            #vendor-table thead th, 
+            #vendor-table tbody td {
+                font-size: 14px; /* Reduce font size for smaller screens */
+            }
+        }
+        #budget-container {
+            background-color: #dfe9e0;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern look */
+            border-radius: 8px; /* Rounded corners */
+            position: absolute;
+            top: 390px;
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping */
+            gap: 20px; /* Space between the boxes */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            width: 700px; /* Ensure the container takes up the full width of the parent */
+            margin-top: 20px; /* Adjust spacing from top */
+        }
+        #expDate-container {
+            background-color: #dfe9e0;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for modern look */
+            border-radius: 8px; /* Rounded corners */
+            position: absolute;
+            top: 390px;
+            left: 800px;
+            display: flex;
+            flex-wrap: nowrap; /* Prevent wrapping */
+            gap: 20px; /* Space between the boxes */
+            overflow-x: auto; /* Allow horizontal scrolling if needed */
+            width: 360px; /* Ensure the container takes up the full width of the parent */
+            margin-top: 20px; /* Adjust spacing from top */
+        }
+
+        .box {
+            width: 200px; /* Adjust the width of each box */
+            height: 200px; /* Set a fixed height */
+            background-color: #4caf50;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .expbox {
+            width: 300px; /* Adjust the width of each box */
+            height: 200px; /* Set a fixed height */
+            background-color: #c54747;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 16px;
+            font-family: Arial, sans-serif;
+            cursor: pointer;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .box:hover,
+        .expbox:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .box:active,
+        .expbox:active {
+            transform: scale(1);
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            position: fixed;
+            top: 10%; /* Adjust the top position */
+            left: 50%;
+            transform: translate(-50%, 0); /* Center horizontally */
+            padding: 20px;
+            border-radius: 8px;
+            width: 400px;
+            max-height: 80vh; /* Restrict height to 80% of the viewport */
+            overflow-y: auto; /* Enable vertical scrolling */
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Optional: Add some shadow */
+        }
+        .modal input,
+        .modal textarea,
+        .modal button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .modal button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .modal button:hover {
+            background-color: #45a049;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        h1 {
+            text-align: center; /* Centers text horizontally */
+            color: rgb(0, 0, 0, 0.5);
+            font-size: 30px;;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+        }
+        #budgetStatus {
+            position: absolute;
+            top: 350px;
+            text-align: center; /* Centers text horizontally */
+            color: rgb(0, 0, 0, 0.5);
+            font-size: 30px;;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+        }
+        #expDateText{
+            position: absolute;
+            left: 800px;
+            top: 350px;
+            color: rgb(0, 0, 0, 0.5);
+            font-size: 30px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            letter-spacing: 2px;
+        }
+
+        
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="button-container">
+            <button id="add-vendor-btn">Add Vendor</button>
+            <button id="add-contract-btn">Generate Contract</button>
+            <button id="del-contract-btn">Delete Vendor</button>
+            <button id="create-po-btn">Create Purchase Order</button>
+            <button id="performance-po-btn">Vendor Performance</button>
+        </div>
+        
+        <div id="vendor-container">
+            <h1>Registered Vendors</h1>
+            <table id="vendor-table">
+                <thead>
+                    <tr>
+                        <th>Vendor ID</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Service Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Contract rows will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <!-- Modal for Add Vendor -->
+    <div id="addVendorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add New Vendor</h2>
+            <form id="vendor-form" action="/add-vendor-byuser" method="POST">
+                <label for="vendorID">ID</label>
+                <input type="number" id="vendorID" name="vendorID" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="phoneNumber">Phone</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+                <label for="serviceCategory">Service Category</label>
+                <input type="text" id="serviceCategory" name="serviceCategory" required>
+                <button type="submit">Add Vendor</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Generate Contract -->
+    <div id="generateContractModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Generate New Contract</h2>
+            <form id="contract-form" action="/generate-contract" method="POST">
+                <label for="ContractID">Contract ID</label>
+                <input type="number" id="ContractID" name="ContractID" required>
+                <label for="TermsAndConditions">Terms and Conditions</label>
+                <textarea id="TermsAndConditions" name="TermsAndConditions" rows="3" required></textarea>
+                <label for="ExpirationDate">Expiration Date</label>
+                <input type="date" id="ExpirationDate" name="ExpirationDate" required>
+                <label for="SpecialClauses">Special Clauses</label>
+                <textarea id="SpecialClauses" name="SpecialClauses" rows="2"></textarea>
+                <label for="VendorID">Vendor ID</label>
+                <input type="number" id="VendorID" name="VendorID" required>
+                <label for="DepartmentID">Department</label>
+                <select id="DepartmentID" name="DepartmentID" required>
+                    <option value="1">Budget Management</option>
+                    <option value="2">Contract Management</option>
+                    <option value="3">Audit</option>
+                </select>                                
+                <button type="submit">Generate Contract</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Del Vendor -->
+    <div id="delVendorModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Delete Vendor</h2>
+            <form id="vendor-form-del" action="/del-vendor" method="POST">
+                <label for="vendorID">Vendor ID</label>
+                <input type="number" id="vendorID" name="vendorID" required>
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for PO -->
+    <div id="createPOModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Purchase Order</h2>
+            <form id="po-form" action="/create-po" method="POST">
+                <label for="PurchaseOrderID">PurchaseOrderID</label>
+                <input type="number" id="PurchaseOrderID" name="PurchaseOrderID" required>
+                <label for="Date">Date</label>
+                <input type="date" id="Date" name="Date" required>
+                <label for="ItemID">Item</label>
+                <select id="ItemID" name="ItemID" required>
+                    <option value="1" data-price="12000">HP Laptop</option>
+                    <option value="2" data-price="15000">Dell PC</option>
+                    <option value="3" data-price="35000">Apple iPad</option>
+                </select>
+                <br>
+                <label for="Quantity">Quantity</label>
+                <input type="number" id="Quantity" name="Quantity" required>
+                <label for="TotalAmount">Total Amount</label>
+                <input type="number" id="TotalAmount" name="TotalAmount" readonly>
+                <label for="Description">Description</label>
+                <textarea id="Description" name="Description" rows="2"></textarea>
+                <label for="Status">Status</label>
+                <textarea id="Status" name="Status" rows="1"></textarea>
+                <label for="DepartmentID">DepartmentID</label>
+                <input type="number" id="DepartmentID" name="DepartmentID" required>
+                <label for="VendorID">VendorID</label>
+                <input type="number" id="VendorID" name="VendorID" required>    
+
+                <button type="submit">Generate</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Performace -->
+    <div id="performanceModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Vendor Performace Evaluation</h2>
+                <form id="performance-form" action="/performance" method="POST">
+                    <label for="VendorID">VendorID</label>
+                    <input type="number" id="VendorID" name="VendorID" required>
+                    
+                    <label for="PerformanceRating">Performance Rating</label>
+                    <input 
+                        type="number" 
+                        id="PerformanceRating" 
+                        name="PerformanceRating" 
+                        step="0.1" 
+                        min="0" 
+                        max="10" 
+                        required>
+
+                    <label for="FeedbackText">Feedback </label>
+                    <textarea id="FeedbackText" name="FeedbackText" rows="2"></textarea>
+    
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+    </div>
+
+    <h1 id="budgetStatus">Budget Status</h1>
+    <div id="budget-container"></div>
+
+    <h1 id="expDateText">Contract Renewal Alert!</h1>
+    <div id="expDate-container"></div>
+
+    <script>
+
+        const itemSelect = document.getElementById('ItemID');
+        const quantityInput = document.getElementById('Quantity');
+        const totalAmountInput = document.getElementById('TotalAmount');
+
+        function calculateTotal() {
+            const selectedItem = itemSelect.options[itemSelect.selectedIndex];
+            const unitPrice = parseFloat(selectedItem.getAttribute('data-price'));
+            const quantity = parseInt(quantityInput.value);
+
+            if (!isNaN(unitPrice) && !isNaN(quantity)) {
+                totalAmountInput.value = unitPrice * quantity;
+            } else {
+                totalAmountInput.value = ''; // Clear the value if inputs are invalid
+            }
+        }
+
+        // Add event listeners for changes in item or quantity
+        itemSelect.addEventListener('change', calculateTotal);
+        quantityInput.addEventListener('input', calculateTotal);
+        // Show and Hide Modals
+        const addVendorModal = document.getElementById('addVendorModal');
+        const generateContractModal = document.getElementById('generateContractModal');
+        const deleteContractModal = document.getElementById('delVendorModal');
+        const addPOModal = document.getElementById('createPOModal');
+        const performanceModal = document.getElementById('performanceModal');
+
+        const vendorBtn = document.getElementById('add-vendor-btn');
+        const contractBtn = document.getElementById('add-contract-btn');
+        const deleteBtn = document.getElementById('del-contract-btn');
+        const POBtn = document.getElementById('create-po-btn');
+        const PerformanceBtn = document.getElementById('performance-po-btn');
+
+        const closeButtons = document.querySelectorAll('.close');
+
+        vendorBtn.onclick = () => addVendorModal.style.display = 'block';
+        contractBtn.onclick = () => generateContractModal.style.display = 'block';
+        deleteBtn.onclick = () => deleteContractModal.style.display = 'block';
+        POBtn.onclick = () => addPOModal.style.display = 'block';
+        PerformanceBtn.onclick = () => performanceModal.style.display = 'block';
+
+        closeButtons.forEach(btn => {
+            btn.onclick = () => {
+                addVendorModal.style.display = 'none';
+                generateContractModal.style.display = 'none';
+                deleteContractModal.style.display = 'none';
+                addPOModal.style.display = 'none';
+                performanceModal.style.display = 'none';
+            };
+        });
+
+        window.onclick = (event) => {
+            if (event.target === addVendorModal) addVendorModal.style.display = 'none';
+            if (event.target === generateContractModal) generateContractModal.style.display = 'none';
+            if (event.target === deleteContractModal) deleteContractModal.style.display = 'none';
+            if (event.target === addPOModal) addPOModal.style.display = 'none';
+            if (event.target === performanceModal) performanceModal.style.display = 'none';
+        };
+
+        // Fetch and show vendors
+        // document.getElementById('show-vendors-btn').addEventListener('click', () => {
+            fetch('/vendors') // Ensure the URL matches your server route
+            .then(response => response.json())
+            .then(vendors => {
+                console.log('Fetched vendors:', vendors); // Debug fetched data
+
+                const tbody = document.querySelector('#vendor-table tbody');
+                tbody.innerHTML = ''; // Clear existing rows
+
+                // Loop through the contracts and add rows to the table
+                vendors.forEach(vendor => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${vendor.VendorID}</td>
+                        <td>${vendor.Email}</td>
+                        <td>${vendor.phoneNumber}</td>
+                        <td>${vendor.ServiceCategory}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching contracts:', error));
+        // });        
+
+
+        fetch('/budget') // Ensure the URL matches your server route
+        .then(response => response.json())
+        .then(budgets => {
+
+            const container = document.getElementById('budget-container');
+            container.innerHTML = ''; // Clear existing rows
+            
+            // Loop through the budgets to create a pie chart for each department
+            budgets.forEach(budget => {
+                const vendorBox = document.createElement('div');
+                vendorBox.classList.add('box');
+                vendorBox.innerHTML = `
+                    <div class="budget-info">
+                    <p><strong>DepartmentID </strong>${budget.DepartmentID}</p>
+                    <p><strong>Allocated </strong>${budget.AllocatedAmount}</p>
+                    <p><strong>Spent </strong>${budget.Spent}</p>
+                    <p><strong>Remaining </strong>${budget.RemainingAmount}</p>
+                `;
+                container.appendChild(vendorBox);
+            });
+            container.style.display = 'flex';
+        })
+        .catch(error => console.error('Error fetching budgets:', error));
+
+        fetch('/contract-date') // Ensure the URL matches your server route
+        .then(response => response.json())
+        .then(contracts => {
+            console.log('Contracts', contracts);
+            
+            const container = document.getElementById('expDate-container');
+            container.innerHTML = ''; // Clear existing content
+
+            // Create a single box to hold all the alerts
+            const vendorBox = document.createElement('div');
+            vendorBox.classList.add('expbox');
+            container.appendChild(vendorBox);
+
+            // Get the current date
+            const currentDate = new Date();
+
+            contracts.forEach(contract => {
+                const expirationDate = new Date(contract.ExpirationDate);
+
+                // Calculate the difference in milliseconds
+                const diffTime = expirationDate - currentDate;
+
+                // Convert milliseconds to days
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                console.log(`Contract ID: ${contract.ContractID}, Days until expiry: ${diffDays}`);
+
+                if (diffDays <= 30) {
+                    // Append text inside the single box
+                    const alertText = document.createElement('p');
+                    alertText.innerHTML = `
+                        <strong>VendorID:</strong> ${contract.VendorID} <br>
+                        <strong>Days Remaining:</strong> ${diffDays}
+                    `;
+                    vendorBox.appendChild(alertText);
+                }
+            });
+        })
+        .catch(error => console.error('Error fetching contracts:', error));
+
+
+    </script>
+
+</body>
+</html>
